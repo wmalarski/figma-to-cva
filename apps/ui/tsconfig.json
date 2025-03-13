@@ -1,7 +1,10 @@
 {
-  "extends": "./tsconfig.json",
   "include": ["src", "styled-system"],
   "compilerOptions": {
+    "target": "es6",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "lib": ["es6", "dom"],
     "esModuleInterop": true,
     "skipLibCheck": true,
