@@ -7,9 +7,6 @@
     "strict": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma"
-    ]
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
   }
 }

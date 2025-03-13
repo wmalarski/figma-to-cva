@@ -7,23 +7,22 @@
   "scripts": {
     "prepare": "panda codegen",
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@ark-ui/solid": "^4.10.1",
+    "@ark-ui/solid": "^5.1.0",
     "@solid-primitives/i18n": "2.2.0",
     "decode-formdata": "0.8.0",
-    "solid-js": "^1.9.4",
-    "valibot": "1.0.0-rc.1"
+    "solid-js": "^1.9.5",
+    "valibot": "1.0.0-rc.4"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.53.0",
+    "@pandacss/dev": "^0.53.1",
     "@park-ui/panda-preset": "^0.43.1",
     "sonda": "^0.7.1",
     "typescript": "^5.8.2",
-    "vite": "^6.1.0",
-    "vite-plugin-solid": "^2.11.1",
+    "vite": "^6.2.1",
+    "vite-plugin-solid": "^2.11.6",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

@@ -12,7 +12,7 @@
     "indentWidth": 2
   },
   "javascript": {
-    "globals": ["figma"]
+    "globals": ["figma", "SceneNode", "__html__"]
   },
   "linter": {
     "enabled": true,
