@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["code.ts"],
+  "compilerOptions": {
+    "lib": ["es6"],
+		"typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ]
+  }
+}

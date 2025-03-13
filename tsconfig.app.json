@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src", "styled-system"],
+  "compilerOptions": {
+    "lib": ["es6", "dom"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "noEmit": true,
+    "types": ["vite/client"],
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+  }
+}
