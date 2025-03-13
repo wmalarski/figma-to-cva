@@ -2,12 +2,12 @@
   "name": "figma-to-cva",
   "id": "1482088845895735268",
   "api": "1.0.0",
-  "main": "code.js",
+  "main": "dist/plugin/index.js",
+  "ui": "dist/ui/index.html",
   "capabilities": [],
   "enableProposedApi": false,
   "documentAccess": "dynamic-page",
   "editorType": ["figma"],
-  "ui": "ui.html",
   "networkAccess": {
     "allowedDomains": ["none"]
   }

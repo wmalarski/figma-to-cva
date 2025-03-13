@@ -1,19 +1,24 @@
+import path from "node:path";
 import Sonda from "sonda/vite";
 import { defineConfig } from "vite";
+import { viteSingleFile } from "vite-plugin-singlefile";
 import solidPlugin from "vite-plugin-solid";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
-    tsconfigPaths(),
     solidPlugin(),
+    viteSingleFile(),
+    tsconfigPaths(),
     Sonda({ enabled: true, open: false }),
   ],
   build: {
-    sourcemap: true,
-    target: "esnext",
+    minify: mode === "production",
+    cssMinify: mode === "production",
+    emptyOutDir: false,
+    outDir: path.resolve("../../dist/ui"),
     rollupOptions: {
-      input: ["index.html", "popup.html"],
+      input: path.resolve("./src/index.html"),
     },
   },
-});
+}));

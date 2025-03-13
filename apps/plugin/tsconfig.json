@@ -2,11 +2,9 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["es6"],
-    "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
   }
 }
