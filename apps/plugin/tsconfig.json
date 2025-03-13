@@ -2,8 +2,10 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["es6"],
+    "skipLibCheck": true,
     "strict": true,
-    "moduleResolution": "node",
+    "noEmit": true,
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
   }
