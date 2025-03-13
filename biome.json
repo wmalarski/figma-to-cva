@@ -12,7 +12,7 @@
     "indentWidth": 2
   },
   "javascript": {
-    "globals": ["chrome"]
+    "globals": ["figma"]
   },
   "linter": {
     "enabled": true,

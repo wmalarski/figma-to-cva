@@ -1,8 +1,8 @@
 {
-  "include": ["src", "styled-system"],
+  "include": ["src", "styled-system", "plugin/code.ts"],
   "compilerOptions": {
     "target": "es6",
-    "lib": ["es6"],
+    "lib": ["es6", "dom"],
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -11,15 +11,15 @@
     "jsxImportSource": "solid-js",
     "strict": true,
     "noEmit": true,
-    "types": ["vite/client"],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma"
-    ],
+    "types": ["vite/client", "./node_modules/@types"],
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
-    }
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ]
   }
 }
