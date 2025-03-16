@@ -12,6 +12,6 @@
     "@figma/plugin-typings": "^1.108.0",
     "typescript": "^5.8.2",
     "vite-plugin-singlefile": "2.2.0",
-    "vite": "^6.2.1"
+    "vite": "^6.2.2"
   }
 }
