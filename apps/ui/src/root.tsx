@@ -1,6 +1,6 @@
 import { type Component, ErrorBoundary, Suspense } from "solid-js";
-import { ErrorFallback } from "./modules/common/components/error-fallback";
-import { I18nContextProvider } from "./modules/common/contexts/i18n";
+import { ErrorFallback } from "./modules/common/error-fallback";
+import { I18nContextProvider } from "./modules/common/i18n";
 import { Main } from "./modules/main/main";
 
 export const App: Component = () => {

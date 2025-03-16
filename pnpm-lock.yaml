@@ -16,6 +16,10 @@ importers:
         version: 2.4.4
 
   apps/plugin:
+    dependencies:
+      '@ftc/types':
+        specifier: workspace:*
+        version: link:../../shared/types
     devDependencies:
       '@figma/plugin-typings':
         specifier: ^1.108.0
@@ -35,6 +39,9 @@ importers:
       '@ark-ui/solid':
         specifier: ^5.1.0
         version: 5.1.0(solid-js@1.9.5)
+      '@ftc/types':
+        specifier: workspace:*
+        version: link:../../shared/types
       '@solid-primitives/i18n':
         specifier: 2.2.0
         version: 2.2.0(solid-js@1.9.5)
@@ -72,6 +79,12 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.8.2)(vite@6.2.2(jiti@2.4.2)(lightningcss@1.25.1))
+
+  shared/types:
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.8.2
 
 packages:
 

@@ -1,13 +1,13 @@
 import { defineConfig } from "@pandacss/dev";
 import { createPreset } from "@park-ui/panda-preset";
-import blue from "@park-ui/panda-preset/colors/blue";
 import sand from "@park-ui/panda-preset/colors/sand";
+import violet from "@park-ui/panda-preset/colors/violet";
 
 export default defineConfig({
   preflight: true,
   presets: [
     createPreset({
-      accentColor: blue,
+      accentColor: violet,
       grayColor: sand,
       radius: "md",
     }),

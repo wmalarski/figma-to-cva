@@ -1,14 +1,23 @@
 import type { Component } from "solid-js";
-import { css } from "styled-system/css";
 import { Button } from "~/ui/button";
+import { sendPluginMessage } from "~/utils/send-plugin-message";
 
 export const Main: Component = () => {
+  const onCreate = () => {
+    const count = 4;
+    sendPluginMessage({ kind: "create-shapes", count });
+  };
+
+  const onCancel = () => {
+    sendPluginMessage({ kind: "cancel" });
+  };
+
   return (
     <div>
-      <Button>Hello</Button>
-      <Button variant="solid">Hello</Button>
-      <Button variant="outline">Hello</Button>
-      <span class={css({ backgroundColor: "gray.dark.a4", p: 8 })}>Buu</span>
+      <Button onClick={onCreate}>Create</Button>
+      <Button onClick={onCancel} variant="solid">
+        Cancel
+      </Button>
     </div>
   );
 };

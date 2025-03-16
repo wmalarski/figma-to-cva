@@ -4,7 +4,7 @@ import { flex } from "styled-system/patterns";
 import { Button } from "~/ui/button";
 import { Card } from "~/ui/card";
 import { XCircleIcon } from "~/ui/icons/x-circle-icon";
-import { useI18n } from "../contexts/i18n";
+import { useI18n } from "./i18n";
 
 export const ErrorFallback = (err: unknown, reset: VoidFunction) => {
   const { t } = useI18n();
