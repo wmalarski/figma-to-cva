@@ -8,3 +8,14 @@ export type PluginMessageCancel = {
 };
 
 export type PluginMessage = PluginMessageCreateShapes | PluginMessageCancel;
+
+export type PluginMessageKind = PluginMessage["kind"];
+
+export type UiMessageSetSelection = {
+  kind: "set-selection";
+  nodes: string[];
+};
+
+export type UiMessage = UiMessageSetSelection;
+
+export type UiMessageKind = UiMessageSetSelection["kind"];

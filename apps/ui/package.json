@@ -10,8 +10,9 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@ark-ui/solid": "^5.1.0",
+    "@ark-ui/solid": "^5.1.1",
     "@ftc/types": "workspace:*",
+    "@solid-primitives/event-listener": "^2.4.0",
     "@solid-primitives/i18n": "2.2.0",
     "decode-formdata": "0.8.0",
     "solid-js": "^1.9.5",

@@ -1,4 +1,8 @@
-import type { PluginMessage, PluginMessageCreateShapes } from "@ftc/types";
+import type {
+  PluginMessage,
+  PluginMessageCreateShapes,
+  UiMessageSetSelection,
+} from "@ftc/types";
 
 figma.on("run", () => {
   const nodes = figma.currentPage.selection;
@@ -11,9 +15,21 @@ figma.on("run", () => {
 
   console.log("nodes", nodes);
 
-  // const firstNode = nodes[0]
-
   figma.showUI(__html__);
+
+  postUiMessage({
+    kind: "set-selection",
+    nodes: nodes.map((node) => node.toString()),
+  });
+});
+
+figma.on("selectionchange", () => {
+  const nodes = figma.currentPage.selection;
+
+  postUiMessage({
+    kind: "set-selection",
+    nodes: nodes.map((node) => node.toString()),
+  });
 });
 
 figma.ui.onmessage = (message: PluginMessage) => {
@@ -46,4 +62,8 @@ const createRectangles = (message: PluginMessageCreateShapes) => {
   figma.viewport.scrollAndZoomIntoView(nodes);
 
   figma.closePlugin();
+};
+
+const postUiMessage = (pluginMessage: UiMessageSetSelection) => {
+  figma.ui.postMessage(pluginMessage, { origin: "*" });
 };
