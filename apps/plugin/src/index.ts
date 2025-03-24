@@ -4,7 +4,7 @@ import type {
   UiMessageSetSelection,
 } from "@ftc/types";
 
-figma.on("run", () => {
+figma.on("run", async () => {
   const nodes = figma.currentPage.selection;
 
   if (nodes.length === 0) {
@@ -15,21 +15,13 @@ figma.on("run", () => {
 
   console.log("nodes", nodes);
 
-  figma.showUI(__html__);
+  figma.showUI(__html__, { width: 500, height: 600 });
 
-  postUiMessage({
-    kind: "set-selection",
-    nodes: nodes.map((node) => node.toString()),
-  });
+  await sendSelection(nodes);
 });
 
-figma.on("selectionchange", () => {
-  const nodes = figma.currentPage.selection;
-
-  postUiMessage({
-    kind: "set-selection",
-    nodes: nodes.map((node) => node.toString()),
-  });
+figma.on("selectionchange", async () => {
+  await sendSelection(figma.currentPage.selection);
 });
 
 figma.ui.onmessage = (message: PluginMessage) => {
@@ -46,6 +38,25 @@ figma.ui.onmessage = (message: PluginMessage) => {
       figma.closePlugin();
     }
   }
+};
+
+const sendSelection = async (nodes: readonly SceneNode[]) => {
+  const withCss = await Promise.all(nodes.map((node) => node.getCSSAsync()));
+
+  postUiMessage({
+    kind: "set-selection",
+    nodes: nodes.map((node, index) => ({
+      boundVariables: node.boundVariables,
+      mainComponent: node.componentPropertyReferences?.mainComponent,
+      explicitVariableModes: node.explicitVariableModes,
+      inferredVariables: node.inferredVariables,
+      resolvedVariableModes: node.resolvedVariableModes,
+      css: withCss[index],
+      constants: figma.constants,
+      variables: figma.variables,
+      getLocalVariables: figma.variables.getLocalVariables(),
+    })),
+  });
 };
 
 const createRectangles = (message: PluginMessageCreateShapes) => {

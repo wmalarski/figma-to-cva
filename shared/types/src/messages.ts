@@ -13,7 +13,7 @@ export type PluginMessageKind = PluginMessage["kind"];
 
 export type UiMessageSetSelection = {
   kind: "set-selection";
-  nodes: string[];
+  nodes: unknown[];
 };
 
 export type UiMessage = UiMessageSetSelection;
