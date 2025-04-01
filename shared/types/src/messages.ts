@@ -1,3 +1,5 @@
+import type { PluginVariable, PluginVariableCollection } from "./variables";
+
 export type PluginMessageCreateShapes = {
   kind: "create-shapes";
   count: number;
@@ -14,6 +16,8 @@ export type PluginMessageKind = PluginMessage["kind"];
 export type UiMessageSetSelection = {
   kind: "set-selection";
   nodes: unknown[];
+  collections: PluginVariableCollection[];
+  variables: PluginVariable[];
 };
 
 export type UiMessage = UiMessageSetSelection;
