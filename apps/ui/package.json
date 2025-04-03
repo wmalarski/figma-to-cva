@@ -10,20 +10,20 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@ark-ui/solid": "^5.1.1",
+    "@ark-ui/solid": "^5.4.0",
     "@ftc/types": "workspace:*",
     "@solid-primitives/event-listener": "^2.4.0",
     "@solid-primitives/i18n": "2.2.0",
-    "decode-formdata": "0.8.0",
+    "decode-formdata": "0.9.0",
     "solid-js": "^1.9.5",
     "valibot": "1.0.0-rc.4"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.53.1",
+    "@pandacss/dev": "^0.53.3",
     "@park-ui/panda-preset": "^0.43.1",
     "sonda": "^0.7.1",
     "typescript": "^5.8.2",
-    "vite": "^6.2.2",
+    "vite": "^6.2.5",
     "vite-plugin-singlefile": "2.2.0",
     "vite-plugin-solid": "^2.11.6",
     "vite-tsconfig-paths": "^5.1.4"
