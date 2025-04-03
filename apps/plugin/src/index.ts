@@ -3,25 +3,25 @@ import type {
   PluginMessageCreateShapes,
   PluginVariable,
   PluginVariableCollection,
-  UiMessageSetSelection,
+  UiMessage,
 } from "@ftc/types";
 
 figma.on("run", async () => {
-  const nodes = figma.currentPage.selection;
+  const selectedComponentSets = getComponentSets();
 
-  if (nodes.length === 0) {
-    figma.notify("Error: At least 1 node has to be selected");
+  if (selectedComponentSets.length === 0) {
+    figma.notify("Error: At least 1 component set node has to be selected");
     figma.closePlugin();
     return;
   }
 
   figma.showUI(__html__, { width: 500, height: 600 });
 
-  await sendSelection(nodes);
-});
+  await sendVariables();
 
-figma.on("selectionchange", async () => {
-  await sendSelection(figma.currentPage.selection);
+  sendComponentSets(selectedComponentSets);
+
+  await sendComponents(selectedComponentSets);
 });
 
 figma.ui.onmessage = (message: PluginMessage) => {
@@ -40,61 +40,91 @@ figma.ui.onmessage = (message: PluginMessage) => {
   }
 };
 
-const sendSelection = async (nodes: readonly SceneNode[]) => {
-  // const withCss = await Promise.all(nodes.map((node) => node.getCSSAsync()));
+const getComponentSets = () => {
+  const selectedNodes = figma.currentPage.selection;
+  const selectedComponentSets = selectedNodes.flatMap((node) =>
+    node.type === "COMPONENT_SET" ? [node] : [],
+  );
 
+  if (selectedComponentSets.length > 0) {
+    return selectedComponentSets;
+  }
+
+  return figma.currentPage.findAllWithCriteria({
+    types: ["COMPONENT_SET"],
+  });
+};
+
+const sendVariables = async () => {
   const variables = await figma.variables.getLocalVariablesAsync();
   const serizalizedVariables = variables.map(serizalizeVariable);
 
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const serizalizedCollections = collections.map(serizalizeVariableCollection);
 
-  // const children = nodes.map(node => figma.currentPage.findAllWithCriteria({types: ["COMPONENT_SET"]}))
-
-  // const nodesMessage = nodes.map((node, index) => ({
-  //   name: node.name,
-  //   boundVariables: node.boundVariables,
-  //   mainComponent: node.componentPropertyReferences?.mainComponent,
-  //   explicitVariableModes: node.explicitVariableModes,
-  //   pageExplicitVariableModes: figma.currentPage.explicitVariableModes,
-  //   inferredVariables: node.inferredVariables,
-  //   resolvedVariableModes: node.resolvedVariableModes,
-  //   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  //   variantGroupProperties: (node as any).variantGroupProperties,
-  //       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  //   componentPropertyDefinitions: (node as any).componentPropertyDefinitions,
-  //   css: withCss[index],
-  // }));
-
-  // nodes.map(node => node.)
-
-  const componentSetList = figma.currentPage.findAllWithCriteria({
-    types: ["COMPONENT_SET"],
+  postUiMessage({
+    kind: "set-variables",
+    collections: serizalizedCollections,
+    variables: serizalizedVariables,
   });
+};
+
+const sendComponentSets = (componentSetNodes: readonly ComponentSetNode[]) => {
+  const componentSets = componentSetNodes.map((node) => ({
+    id: node.id,
+    name: node.name,
+    node: node.variantGroupProperties,
+  }));
+
+  postUiMessage({
+    kind: "set-component-sets",
+    componentSets,
+  });
+};
+
+const sendComponents = async (
+  componentSetNodes: readonly ComponentSetNode[],
+) => {
+  const componentSetIds = new Set(componentSetNodes.map((node) => node.id));
+
   const componentList = figma.currentPage.findAllWithCriteria({
     types: ["COMPONENT"],
   });
-  const groupList = figma.currentPage.findAllWithCriteria({ types: ["GROUP"] });
-  const instanceList = figma.currentPage.findAllWithCriteria({
-    types: ["INSTANCE"],
-  });
-  const frames = figma.currentPage.findAllWithCriteria({ types: ["FRAME"] });
 
-  console.log("nodes", nodes);
-  console.log("componentSetList", componentSetList);
+  const batchSize = 50;
+  const batches: ComponentNode[][] = [[]];
+
+  componentList.forEach((node) => {
+    const lastBatch = batches[batches.length - 1];
+
+    if (lastBatch.length < batchSize) {
+      lastBatch.push(node);
+    } else {
+      batches.push([node]);
+    }
+  });
+
+  const css = await Promise.all(
+    componentList.map((node) => node.getCSSAsync()),
+  );
+
+  const components = componentList.map((node, index) => ({
+    name: node.name,
+    parentId: node.parent?.id,
+    css: css[index],
+  }));
+
+  // console.log("nodes", nodes);
+  // console.log("variables", variables);
+  // console.log("collections", collections);
+
   console.log("componentList", componentList);
-  console.log("instanceList", instanceList);
-  console.log("groupList", groupList);
-  console.log("frames", frames);
-  console.log("variables", variables);
-  console.log("collections", collections);
-  console.log("collections", collections);
 
   postUiMessage({
-    kind: "set-selection",
-    nodes: [],
-    collections: serizalizedCollections,
-    variables: serizalizedVariables,
+    kind: "set-components",
+    components,
+    page: 0,
+    total: 5,
   });
 };
 
@@ -114,7 +144,7 @@ const createRectangles = (message: PluginMessageCreateShapes) => {
   figma.closePlugin();
 };
 
-const postUiMessage = (pluginMessage: UiMessageSetSelection) => {
+const postUiMessage = (pluginMessage: UiMessage) => {
   figma.ui.postMessage(pluginMessage, { origin: "*" });
 };
 

@@ -13,13 +13,27 @@ export type PluginMessage = PluginMessageCreateShapes | PluginMessageCancel;
 
 export type PluginMessageKind = PluginMessage["kind"];
 
-export type UiMessageSetSelection = {
-  kind: "set-selection";
-  nodes: unknown[];
+export type UiMessageSetVariables = {
+  kind: "set-variables";
   collections: PluginVariableCollection[];
   variables: PluginVariable[];
 };
 
-export type UiMessage = UiMessageSetSelection;
+export type UiMessageSetComponentSets = {
+  kind: "set-component-sets";
+  componentSets: unknown[];
+};
 
-export type UiMessageKind = UiMessageSetSelection["kind"];
+export type UiMessageSetComponents = {
+  kind: "set-components";
+  components: unknown[];
+  total: number;
+  page: number;
+};
+
+export type UiMessage =
+  | UiMessageSetVariables
+  | UiMessageSetComponentSets
+  | UiMessageSetComponents;
+
+export type UiMessageKind = UiMessage["kind"];
