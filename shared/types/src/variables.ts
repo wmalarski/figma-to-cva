@@ -65,6 +65,7 @@ export type PluginValuesByMode = Record<string, PluginVariableValue>;
 export type PluginVariable = {
   id: string;
   key: string;
+  name: string;
   description: string;
   resolvedType: PluginVariableResolvedDataType;
   scopes: PluginVariableScope[];
@@ -84,5 +85,4 @@ export type PluginVariableCollection = {
   defaultModeId: string;
   modes: PluginVariableMode[];
   name: string;
-  variableIds: string[];
 };

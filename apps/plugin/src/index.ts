@@ -41,7 +41,7 @@ figma.ui.onmessage = (message: PluginMessage) => {
 };
 
 const sendSelection = async (nodes: readonly SceneNode[]) => {
-  const withCss = await Promise.all(nodes.map((node) => node.getCSSAsync()));
+  // const withCss = await Promise.all(nodes.map((node) => node.getCSSAsync()));
 
   const variables = await figma.variables.getLocalVariablesAsync();
   const serizalizedVariables = variables.map(serizalizeVariable);
@@ -49,25 +49,50 @@ const sendSelection = async (nodes: readonly SceneNode[]) => {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const serizalizedCollections = collections.map(serizalizeVariableCollection);
 
-  const nodesMessage = nodes.map((node, index) => ({
-    boundVariables: node.boundVariables,
-    mainComponent: node.componentPropertyReferences?.mainComponent,
-    explicitVariableModes: node.explicitVariableModes,
-    inferredVariables: node.inferredVariables,
-    resolvedVariableModes: node.resolvedVariableModes,
-    css: withCss[index],
-  }));
+  // const children = nodes.map(node => figma.currentPage.findAllWithCriteria({types: ["COMPONENT_SET"]}))
 
-  // console.log("nodes", nodes);
-  // console.log("nodesMessage", nodesMessage);
-  // console.log("localVariables", localVariables);
-  // console.log("variableCollections", variables);
-  // console.log("figma.constants", figma.constants);
-  // console.log("figma.variables", figma.variables);
+  // const nodesMessage = nodes.map((node, index) => ({
+  //   name: node.name,
+  //   boundVariables: node.boundVariables,
+  //   mainComponent: node.componentPropertyReferences?.mainComponent,
+  //   explicitVariableModes: node.explicitVariableModes,
+  //   pageExplicitVariableModes: figma.currentPage.explicitVariableModes,
+  //   inferredVariables: node.inferredVariables,
+  //   resolvedVariableModes: node.resolvedVariableModes,
+  //   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  //   variantGroupProperties: (node as any).variantGroupProperties,
+  //       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  //   componentPropertyDefinitions: (node as any).componentPropertyDefinitions,
+  //   css: withCss[index],
+  // }));
+
+  // nodes.map(node => node.)
+
+  const componentSetList = figma.currentPage.findAllWithCriteria({
+    types: ["COMPONENT_SET"],
+  });
+  const componentList = figma.currentPage.findAllWithCriteria({
+    types: ["COMPONENT"],
+  });
+  const groupList = figma.currentPage.findAllWithCriteria({ types: ["GROUP"] });
+  const instanceList = figma.currentPage.findAllWithCriteria({
+    types: ["INSTANCE"],
+  });
+  const frames = figma.currentPage.findAllWithCriteria({ types: ["FRAME"] });
+
+  console.log("nodes", nodes);
+  console.log("componentSetList", componentSetList);
+  console.log("componentList", componentList);
+  console.log("instanceList", instanceList);
+  console.log("groupList", groupList);
+  console.log("frames", frames);
+  console.log("variables", variables);
+  console.log("collections", collections);
+  console.log("collections", collections);
 
   postUiMessage({
     kind: "set-selection",
-    nodes: nodesMessage,
+    nodes: [],
     collections: serizalizedCollections,
     variables: serizalizedVariables,
   });
@@ -98,6 +123,7 @@ const serizalizeVariable = (variable: Variable): PluginVariable => {
     id: variable.id,
     key: variable.key,
     description: variable.description,
+    name: variable.name,
     resolvedType: variable.resolvedType,
     scopes: variable.scopes,
     valuesByMode: variable.valuesByMode,
@@ -115,6 +141,5 @@ const serizalizeVariableCollection = (
     defaultModeId: collection.defaultModeId,
     modes: collection.modes,
     name: collection.name,
-    variableIds: collection.variableIds,
   };
 };
